@@ -75,7 +75,32 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+This section contains all the steps that I took while building this application
+This is all happening in the www/ (srv/http/ for arch linux) directory.
+
+Step 1: Download the files
+
+Step 2: Unzip the zipped files
+
+Step 3: Move the *.sql file inside the unzipped directory
+
+Step 4: Create a database called assignment02
+```
+mysql -u root -p
+>> create database assignment02;
+>> show databases;
+>> exit
+
+# put the definition in the *.sql file to our database assignment02
+mysql -u root -p assignment02 < globitek_week2.sql
+
+```
+
+Step 5: Fill in the database credential in private/db_credentials.
+
+
+
+
 
 ## License
 
