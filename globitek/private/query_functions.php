@@ -290,7 +290,13 @@
       return $errors;
     }
 
-    $sql = ""; // TODO add SQL
+    $sql = "UPDATE salespeople SET ";
+    $sql .= "first_name='" . $salesperson['first_name'] . "', ";
+    $sql .= "last_name='" . $salesperson['last_name'] . "', ";
+    $sql .= "email='" . $salesperson['email'] . "', ";
+    $sql .= "phone='" . $salesperson['phone'] . "' ";
+    $sql .= "WHERE id='" . $salesperson['id'] . "' ";
+    $sql .= "LIMIT 1;";
     // For update_salesperson statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
