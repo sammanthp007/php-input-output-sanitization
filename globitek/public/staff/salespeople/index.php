@@ -26,7 +26,7 @@
       echo "<td>" . $salesperson['first_name'] . "</td>";
       echo "<td>" . $salesperson['last_name'] . "</td>";
       echo "<td>";
-      echo "<a href=\"#add_a_url\">Show</a>";
+      echo "<a href=\"show.php?id=" . $salesperson['id'] ."\">Show</a>";
       echo "</td>";
       echo "<td>";
       echo "<a href=\"#add_a_url\">Edit</a>";
