@@ -4,7 +4,7 @@
 if(!isset($_GET['id'])) {
   redirect_to('index.php');
 }
-$id = $_GET['id'];
+$id = urlencode($_GET['id']);
 $state_result = find_state_by_id($id);
 // No loop, only one result
 $state = db_fetch_assoc($state_result);
@@ -35,12 +35,12 @@ $state = db_fetch_assoc($state_result);
     echo "</table>";
 ?>
     <br />
-  <a href="edit.php?id=<?php echo $state['id']; ?>">Edit</a><br />
+  <a href="edit.php?id=<?php echo urlencode($state['id']); ?>">Edit</a><br />
     <hr />
 
     <h2>Territories</h2>
     <br />
-    <a href="../territories/new.php?stateid=<?php echo $state['id']; ?>">Add a Territory</a><br />
+    <a href="../territories/new.php?stateid=<?php echo urlencode($state['id']); ?>">Add a Territory</a><br />
 
 <?php
     $territory_result = find_territories_for_state_id($state['id']);
@@ -49,7 +49,7 @@ $state = db_fetch_assoc($state_result);
     while($territory = db_fetch_assoc($territory_result)) {
       echo "<li>";
       echo "<a href=\"../territories/show.php?id=";
-      echo $territory['id'];
+      echo urlencode($territory['id']);
       echo "\">";
       echo $territory['name'];
       echo "</a>";

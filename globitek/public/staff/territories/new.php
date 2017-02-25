@@ -14,7 +14,7 @@ $territory = array(
   'state_id' => ''
 );
 
-$state_id = $_GET['stateid'];
+$state_id = urlencode($_GET['stateid']);
 
 if(is_post_request()) {
 
