@@ -14,9 +14,12 @@ $errors = array();
 if(is_post_request()) {
 
   // Confirm that values are present before accessing them.
-  if(isset($_POST['name'])) { $state['name'] = $_POST['name']; }
-  if(isset($_POST['code'])) { $state['code'] = $_POST['code']; }
-  if(isset($_POST['country_id'])) { $state['country_id'] = $_POST['country_id']; }
+    if(isset($_POST['name'])) { $state['name'] = 
+        htmlspecialchars($_POST['name']); }
+    if(isset($_POST['code'])) { $state['code'] =
+        htmlspecialchars($_POST['code']); }
+    if(isset($_POST['country_id'])) { $state['country_id'] =
+        htmlspecialchars($_POST['country_id']); }
 
 
   $result = update_state($state);

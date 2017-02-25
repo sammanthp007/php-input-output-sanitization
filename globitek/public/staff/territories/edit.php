@@ -20,10 +20,12 @@ $errors = array();
 if(is_post_request()) {
 
   // Confirm that values are present before accessing them.
-  if(isset($_POST['name'])) { $territory['name'] = $_POST['name']; }
-  if(isset($_POST['position'])) { $territory['position'] = $_POST['position']; }
-  if(isset($_POST['country_id'])) { $territory['country_id'] = $_POST['country_id']; }
-
+    if(isset($_POST['name'])) { $territory['name'] =
+        htmlspecialchars($_POST['name']); }
+    if(isset($_POST['position'])) { $territory['position'] =
+        htmlspecialchars($_POST['position']); }
+    if(isset($_POST['country_id'])) { $territory['country_id'] =
+        htmlspecialchars($_POST['country_id']); }
 
   $result = update_territory($territory);
   if($result === true) {
