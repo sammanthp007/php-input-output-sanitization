@@ -50,6 +50,9 @@
       $errors[] = "State name cannot be blank.";
     } elseif (!has_length($state['name'], array('min' => 2, 'max' => 255))) {
       $errors[] = "State name must be between 2 and 255 characters.";
+    // My custom validation 5
+    } elseif (preg_match("/^[A-Z ]+$/", $state['name']) == 0) {
+        $errors[] = "Name must be letters and space only";
     }
 
     if (is_blank($state['code'])) {
