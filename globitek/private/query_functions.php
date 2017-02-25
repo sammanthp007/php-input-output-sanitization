@@ -396,13 +396,15 @@
   function validate_user($user, $errors=array()) {
     if (is_blank($user['first_name'])) {
       $errors[] = "First name cannot be blank.";
-    } elseif (!has_length($user['first_name'], array('min' => 2, 'max' => 255))) {
+    } elseif (!has_length($user['first_name'], array('min' => 2, 'max' => 255)))
+    {
       $errors[] = "First name must be between 2 and 255 characters.";
     }
 
     if (is_blank($user['last_name'])) {
       $errors[] = "Last name cannot be blank.";
-    } elseif (!has_length($user['last_name'], array('min' => 2, 'max' => 255))) {
+    } elseif (!has_length($user['last_name'], array('min' => 2, 'max' => 255)))
+    {
       $errors[] = "Last name must be between 2 and 255 characters.";
     }
 
@@ -410,6 +412,14 @@
       $errors[] = "Email cannot be blank.";
     } elseif (!has_valid_email_format($user['email'])) {
       $errors[] = "Email must be a valid format.";
+    } elseif (preg_match("/[A-Za-z0-9@._\-]+/", $user['email']) == 0) {
+        $errors[] = "Email can only contain A-Z, a-z, 0-9, @,.,_,-";
+    }
+    // My Custom validation 2:
+    elseif 
+        (preg_match("/^[A-Za-z0-9._\-]+@[A-Za-z0-9._\-]+\.[A-Za-z0-9._\-]+$/", 
+        $user['email']) == 0) {
+        $errors[] = "Email is invalid";
     }
 
     if (is_blank($user['username'])) {
