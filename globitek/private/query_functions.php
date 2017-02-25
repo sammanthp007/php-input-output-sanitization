@@ -56,10 +56,16 @@
       $errors[] = "Code cannot be blank.";
     } elseif (!has_length($state['code'], array('min' => 1, 'max' => 2))) {
       $errors[] = "Code must be between 1 and 2 characters.";
+    // My custom validation 4
+    } elseif (preg_match("/^[A-Z]{2}$/", $state['code']) == 0) {
+        $errors[] = "Code must be 2 capital letters";
     }
 
     if (is_blank($state['country_id'])) {
       $errors[] = "Country ID cannot be blank.";
+    // My custom validation 3
+    } elseif (preg_match("/^[1-9][0-9]*$/", $state['country_id']) == 0) {
+        $errors[] = "Country ID must be numbers";
     }
 
     return $errors;
@@ -283,6 +289,14 @@
       $errors[] = "Email cannot be blank.";
     } elseif (!has_valid_email_format($salesperson['email'])) {
       $errors[] = "Email must be a valid format.";
+    } elseif (preg_match("/[A-Za-z0-9@._\-]+/", $user['email']) == 0) {
+        $errors[] = "Email can only contain A-Z, a-z, 0-9, @,.,_,-";
+    }
+    // My Custom validation 2:
+    elseif 
+        (preg_match("/^[A-Za-z0-9._\-]+@[A-Za-z0-9._\-]+\.[A-Za-z0-9._\-]+$/", 
+        $user['email']) == 0) {
+        $errors[] = "Email is invalid";
     }
 
     if (is_blank($salesperson['phone'])) {
