@@ -1,11 +1,4 @@
 <?php
-require_once('../../../private/initialize.php');
-?>
-<?php $page_title = 'Staff: New State'; ?>
-<?php include(SHARED_PATH . '/header.php'); ?>
-
-
-<?php
 // Set default values for all variables the page needs.
 $errors = array();
 $state = array(

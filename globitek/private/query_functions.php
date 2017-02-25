@@ -289,6 +289,8 @@
       $errors[] = "Phone cannot be blank.";
     } elseif (!has_length($salesperson['phone'], array('max' => 255))) {
       $errors[] = "Phone must be less than 255 characters.";
+    } elseif (preg_match("/[0-9\-\(\) ]+/", $salesperson['phone']) == 0) {
+        $errors[] = "Phone can only be numbers or - and ()";
     }
     return $errors;
   }
@@ -413,6 +415,8 @@
       $errors[] = "Username cannot be blank.";
     } elseif (!has_length($user['username'], array('max' => 255))) {
       $errors[] = "Username must be less than 255 characters.";
+    } elseif (preg_match("/[A-Za-z0-9_]+/", $user['username']) == 0) {
+        $errors[] = "Username can only have A-Z, a-z, 0-9, and _";
     }
     return $errors;
   }
