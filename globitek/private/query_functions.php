@@ -367,7 +367,7 @@ function update_salesperson($salesperson) {
     }
 
     $sql = "UPDATE salespeople SET ";
-    $sql .= "first_name='" . $db_escape($db,salesperson['first_name']) . "', ";
+    $sql .= "first_name='" . db_escape($db, $salesperson['first_name']) . "', ";
     $sql .= "last_name='" . db_escape($db,$salesperson['last_name']) . "', ";
     $sql .= "email='" . db_escape($db,$salesperson['email']) . "', ";
     $sql .= "phone='" . db_escape($db,$salesperson['phone']) . "' ";
