@@ -289,8 +289,9 @@
       $errors[] = "Phone cannot be blank.";
     } elseif (!has_length($salesperson['phone'], array('max' => 255))) {
       $errors[] = "Phone must be less than 255 characters.";
-    } elseif (preg_match("/[0-9\-\(\) ]+/", $salesperson['phone']) == 0) {
-        $errors[] = "Phone can only be numbers or - and ()";
+        // My custom validation 1: phone numbers must end in number
+    } elseif (preg_match("/[0-9\-\(\) ]+[0-9]$/", $salesperson['phone']) == 0) {
+        $errors[] = "Phone can only be numbers or - and () and must be valid";
     }
     return $errors;
   }
