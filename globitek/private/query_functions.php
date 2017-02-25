@@ -181,7 +181,13 @@
       return $errors;
     }
 
-    $sql = ""; // TODO add SQL
+    $sql = "INSERT INTO territories "; // TODO add SQL
+    $sql .= "(name, position, state_id) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . $territory['name'] . "',";
+    $sql .= "'" . $territory['position'] . "',";
+    $sql .= "'" . $territory['state_id'] . "' ";
+    $sql .= ");";
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
