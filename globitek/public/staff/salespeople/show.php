@@ -37,7 +37,10 @@ $salesperson = db_fetch_assoc($salespeople_result);
     db_free_result($salespeople_result);
   ?>
   <br />
-  <a href="edit.php?id=<?php echo $salesperson['id']; ?>">Edit</a><br />
+<?php
+    $qstring = 'id=' . urlencode($salesperson['id']);
+    echo '<a href="edit.php?' . htmlentities($qstring) . '">Edit</a><br />';
+?>
 </div>
 
 <?php include(SHARED_PATH . '/footer.php'); ?>

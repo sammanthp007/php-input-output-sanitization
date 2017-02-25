@@ -1,87 +1,87 @@
 <?php
 
-  //
-  // COUNTRY QUERIES
-  //
+//
+// COUNTRY QUERIES
+//
 
-  // Find all countries, ordered by name
-  function find_all_countries() {
+// Find all countries, ordered by name
+function find_all_countries() {
     global $db;
     $sql = "SELECT * FROM countries ORDER BY name ASC;";
     $country_result = db_query($db, $sql);
     return $country_result;
-  }
+}
 
-  //
-  // STATE QUERIES
-  //
+//
+// STATE QUERIES
+//
 
-  // Find all states, ordered by name
-  function find_all_states() {
+// Find all states, ordered by name
+function find_all_states() {
     global $db;
     $sql = "SELECT * FROM states ";
     $sql .= "ORDER BY name ASC;";
     $state_result = db_query($db, $sql);
     return $state_result;
-  }
+}
 
-  // Find all states, ordered by name
-  function find_states_for_country_id($country_id=0) {
+// Find all states, ordered by name
+function find_states_for_country_id($country_id=0) {
     global $db;
     $sql = "SELECT * FROM states ";
     $sql .= "WHERE country_id='" . $country_id . "' ";
     $sql .= "ORDER BY name ASC;";
     $state_result = db_query($db, $sql);
     return $state_result;
-  }
+}
 
-  // Find state by ID
-  function find_state_by_id($id=0) {
+// Find state by ID
+function find_state_by_id($id=0) {
     global $db;
     $sql = "SELECT * FROM states ";
     $sql .= "WHERE id='" . $id . "';";
     $state_result = db_query($db, $sql);
     return $state_result;
-  }
+}
 
-  function validate_state($state, $errors=array()) {
+function validate_state($state, $errors=array()) {
     // TODO add validations
     if (is_blank($state['name'])) {
-      $errors[] = "State name cannot be blank.";
+        $errors[] = "State name cannot be blank.";
     } elseif (!has_length($state['name'], array('min' => 2, 'max' => 255))) {
-      $errors[] = "State name must be between 2 and 255 characters.";
-    // My custom validation 5
-    } elseif (preg_match("/^[A-Z ]+$/", $state['name']) == 0) {
+        $errors[] = "State name must be between 2 and 255 characters.";
+        // My custom validation 5
+    } elseif (preg_match("/^[A-Za-z ]+$/", $state['name']) == 0) {
         $errors[] = "Name must be letters and space only";
     }
 
     if (is_blank($state['code'])) {
-      $errors[] = "Code cannot be blank.";
+        $errors[] = "Code cannot be blank.";
     } elseif (!has_length($state['code'], array('min' => 1, 'max' => 2))) {
-      $errors[] = "Code must be between 1 and 2 characters.";
-    // My custom validation 4
+        $errors[] = "Code must be between 1 and 2 characters.";
+        // My custom validation 4
     } elseif (preg_match("/^[A-Z]{2}$/", $state['code']) == 0) {
         $errors[] = "Code must be 2 capital letters";
     }
 
     if (is_blank($state['country_id'])) {
-      $errors[] = "Country ID cannot be blank.";
-    // My custom validation 3
+        $errors[] = "Country ID cannot be blank.";
+        // My custom validation 3
     } elseif (preg_match("/^[1-9][0-9]*$/", $state['country_id']) == 0) {
         $errors[] = "Country ID must be numbers";
     }
 
     return $errors;
-  }
+}
 
-  // Add a new state to the table
-  // Either returns true or an array of errors
-  function insert_state($state) {
+// Add a new state to the table
+// Either returns true or an array of errors
+function insert_state($state) {
     global $db;
 
     $errors = validate_state($state);
     if (!empty($errors)) {
-      return $errors;
+        return $errors;
     }
 
     $sql = "INSERT INTO states "; // TODO add SQL
@@ -94,24 +94,24 @@
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
-      return true;
+        return true;
     } else {
-      // The SQL INSERT statement failed.
-      // Just show the error, not the form
-      echo db_error($db);
-      db_close($db);
-      exit;
+        // The SQL INSERT statement failed.
+        // Just show the error, not the form
+        echo db_error($db);
+        db_close($db);
+        exit;
     }
-  }
+}
 
-  // Edit a state record
-  // Either returns true or an array of errors
-  function update_state($state) {
+// Edit a state record
+// Either returns true or an array of errors
+function update_state($state) {
     global $db;
 
     $errors = validate_state($state);
     if (!empty($errors)) {
-      return $errors;
+        return $errors;
     }
 
     $sql = "UPDATE states SET ";
@@ -123,71 +123,74 @@
     // For update_state statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
-      return true;
+        return true;
     } else {
-      // The SQL UPDATE statement failed.
-      // Just show the error, not the form
-      echo db_error($db);
-      db_close($db);
-      exit;
+        // The SQL UPDATE statement failed.
+        // Just show the error, not the form
+        echo db_error($db);
+        db_close($db);
+        exit;
     }
-  }
+}
 
-  //
-  // TERRITORY QUERIES
-  //
+//
+// TERRITORY QUERIES
+//
 
-  // Find all territories, ordered by state_id
-  function find_all_territories() {
+// Find all territories, ordered by state_id
+function find_all_territories() {
     global $db;
     $sql = "SELECT * FROM territories ";
     $sql .= "ORDER BY state_id ASC, position ASC;";
     $territory_result = db_query($db, $sql);
     return $territory_result;
-  }
+}
 
-  // Find all territories whose state_id (foreign key) matches this id
-  function find_territories_for_state_id($state_id=0) {
+// Find all territories whose state_id (foreign key) matches this id
+function find_territories_for_state_id($state_id=0) {
     global $db;
     $sql = "SELECT * FROM territories ";
     $sql .= "WHERE state_id='" . $state_id . "' ";
     $sql .= "ORDER BY position ASC;";
     $territory_result = db_query($db, $sql);
     return $territory_result;
-  }
+}
 
-  // Find territory by ID
-  function find_territory_by_id($id=0) {
+// Find territory by ID
+function find_territory_by_id($id=0) {
     global $db;
     $sql = "SELECT * FROM territories ";
     $sql .= "WHERE id='" . $id . "';";
     $territory_result = db_query($db, $sql);
     return $territory_result;
-  }
+}
 
-  function validate_territory($territory, $errors=array()) {
+function validate_territory($territory, $errors=array()) {
     // TODO add validations
     if (is_blank($territory['name'])) {
-      $errors[] = "Territory name cannot be blank.";
+        $errors[] = "Territory name cannot be blank.";
     } elseif (!has_length($territory['name'], array('min' => 2, 'max' => 255))) {
-      $errors[] = "Territory name must be between 2 and 255 characters.";
+        $errors[] = "Territory name must be between 2 and 255 characters.";
+        // My custom validation
+    } elseif (preg_match("/^[A-Za-z0-9]+/", $territory['name']) == 0) {
+        $errors[] = "Name is invalid, it can only read alphabets and numbers";
     }
 
     if (is_blank($territory['position'])) {
-      $errors[] = "Position cannot be blank.";
+        $errors[] = "Position cannot be blank.";
     }
 
     return $errors;
-  }
+}
 
-  // Add a new territory to the table
-  // Either returns true or an array of errors
-  function insert_territory($territory) {
+// Add a new territory to the table
+// Either returns true or an array of errors
+function insert_territory($territory) {
     global $db;
 
     $errors = validate_territory($territory);
     if (!empty($errors)) {
-      return $errors;
+        return $errors;
     }
 
     $sql = "INSERT INTO territories "; // TODO add SQL
@@ -200,24 +203,24 @@
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
-      return true;
+        return true;
     } else {
-      // The SQL INSERT territoryment failed.
-      // Just show the error, not the form
-      echo db_error($db);
-      db_close($db);
-      exit;
+        // The SQL INSERT territoryment failed.
+        // Just show the error, not the form
+        echo db_error($db);
+        db_close($db);
+        exit;
     }
-  }
+}
 
-  // Edit a territory record
-  // Either returns true or an array of errors
-  function update_territory($territory) {
+// Edit a territory record
+// Either returns true or an array of errors
+function update_territory($territory) {
     global $db;
 
     $errors = validate_territory($territory);
     if (!empty($errors)) {
-      return $errors;
+        return $errors;
     }
 
     $sql = "UPDATE territories SET ";
@@ -228,99 +231,107 @@
     // For update_territory statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
-      return true;
+        return true;
     } else {
-      // The SQL UPDATE territoryment failed.
-      // Just show the error, not the form
-      echo db_error($db);
-      db_close($db);
-      exit;
+        // The SQL UPDATE territoryment failed.
+        // Just show the error, not the form
+        echo db_error($db);
+        db_close($db);
+        exit;
     }
-  }
+}
 
-  //
-  // SALESPERSON QUERIES
-  //
+//
+// SALESPERSON QUERIES
+//
 
-  // Find all salespeople, ordered last_name, first_name
-  function find_all_salespeople() {
+// Find all salespeople, ordered last_name, first_name
+function find_all_salespeople() {
     global $db;
     $sql = "SELECT * FROM salespeople ";
     $sql .= "ORDER BY last_name ASC, first_name ASC;";
     $salespeople_result = db_query($db, $sql);
     return $salespeople_result;
-  }
+}
 
-  // To find salespeople, we need to use the join table.
-  // We LEFT JOIN salespeople_territories and then find results
-  // in the join table which have the same territory ID.
-  function find_salespeople_for_territory_id($territory_id=0) {
+// To find salespeople, we need to use the join table.
+// We LEFT JOIN salespeople_territories and then find results
+// in the join table which have the same territory ID.
+function find_salespeople_for_territory_id($territory_id=0) {
     global $db;
     $sql = "SELECT * FROM salespeople ";
     $sql .= "LEFT JOIN salespeople_territories
-              ON (salespeople_territories.salesperson_id = salespeople.id) ";
-    $sql .= "WHERE salespeople_territories.territory_id='" . $territory_id . "' ";
-    $sql .= "ORDER BY last_name ASC, first_name ASC;";
-    $salespeople_result = db_query($db, $sql);
-    return $salespeople_result;
-  }
+        ON (salespeople_territories.salesperson_id = salespeople.id) ";
+$sql .= "WHERE salespeople_territories.territory_id='" . $territory_id . "' ";
+$sql .= "ORDER BY last_name ASC, first_name ASC;";
+$salespeople_result = db_query($db, $sql);
+return $salespeople_result;
+}
 
-  // Find salesperson using id
-  function find_salesperson_by_id($id=0) {
+// Find salesperson using id
+function find_salesperson_by_id($id=0) {
     global $db;
     $sql = "SELECT * FROM salespeople ";
     $sql .= "WHERE id='" . $id . "';";
     $salespeople_result = db_query($db, $sql);
     return $salespeople_result;
-  }
+}
 
-  function validate_salesperson($salesperson, $errors=array()) {
+function validate_salesperson($salesperson, $errors=array()) {
     // TODO add validations
     if (is_blank($salesperson['first_name'])) {
-      $errors[] = "First name cannot be blank.";
+        $errors[] = "First name cannot be blank.";
     } elseif (!has_length($salesperson['first_name'], array('min' => 2, 'max' => 255))) {
-      $errors[] = "First name must be between 2 and 255 characters.";
+        $errors[] = "First name must be between 2 and 255 characters.";
+    }
+    // My custom validation
+    elseif (preg_match("/^[A-Za-z]+$/", $salesperson['first_name']) == 0) {
+        $errors[] = "First name is invalid, it can only read alphabets ";
     }
 
     if (is_blank($salesperson['last_name'])) {
-      $errors[] = "Last name cannot be blank.";
+        $errors[] = "Last name cannot be blank.";
     } elseif (!has_length($salesperson['last_name'], array('min' => 2, 'max' => 255))) {
-      $errors[] = "Last name must be between 2 and 255 characters.";
+        $errors[] = "Last name must be between 2 and 255 characters.";
+    }
+    // My custom validation
+    elseif (preg_match("/^[A-Za-z]+$/", $salesperson['last_name']) == 0) {
+        $errors[] = "Last name is invalid, it can only read alphabets ";
     }
 
     if (is_blank($salesperson['email'])) {
-      $errors[] = "Email cannot be blank.";
+        $errors[] = "Email cannot be blank.";
     } elseif (!has_valid_email_format($salesperson['email'])) {
-      $errors[] = "Email must be a valid format.";
-    } elseif (preg_match("/[A-Za-z0-9@._\-]+/", $user['email']) == 0) {
+        $errors[] = "Email must be a valid format.";
+    } elseif (preg_match("/[A-Za-z0-9@._\-]+/", $salesperson['email']) == 0) {
         $errors[] = "Email can only contain A-Z, a-z, 0-9, @,.,_,-";
     }
     // My Custom validation 2:
-    elseif 
-        (preg_match("/^[A-Za-z0-9._\-]+@[A-Za-z0-9._\-]+\.[A-Za-z0-9._\-]+$/", 
-        $user['email']) == 0) {
-        $errors[] = "Email is invalid";
+    elseif
+        (preg_match("/^[A-Za-z0-9._\-]+@[A-Za-z0-9._\-]+\.[A-Za-z0-9._\-]+$/",
+            $salesperson['email']) == 0) {
+            $errors[] = "Email is invalid";
     }
 
     if (is_blank($salesperson['phone'])) {
-      $errors[] = "Phone cannot be blank.";
+        $errors[] = "Phone cannot be blank.";
     } elseif (!has_length($salesperson['phone'], array('max' => 255))) {
-      $errors[] = "Phone must be less than 255 characters.";
+        $errors[] = "Phone must be less than 255 characters.";
         // My custom validation 1: phone numbers must end in number
-    } elseif (preg_match("/[0-9\-\(\) ]+[0-9]$/", $salesperson['phone']) == 0) {
+    } elseif (preg_match("/^[0-9\-\(\) ]*[0-9]$/", $salesperson['phone']) == 0) {
         $errors[] = "Phone can only be numbers or - and () and must be valid";
     }
     return $errors;
-  }
+}
 
-  // Add a new salesperson to the table
-  // Either returns true or an array of errors
-  function insert_salesperson($salesperson) {
+// Add a new salesperson to the table
+// Either returns true or an array of errors
+function insert_salesperson($salesperson) {
     global $db;
 
     $errors = validate_salesperson($salesperson);
     if (!empty($errors)) {
-      return $errors;
+        return $errors;
     }
 
     $sql = "INSERT INTO salespeople "; // add SQL
@@ -335,24 +346,24 @@
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
-      return true;
+        return true;
     } else {
-      // The SQL INSERT statement failed.
-      // Just show the error, not the form
-      echo db_error($db);
-      db_close($db);
-      exit;
+        // The SQL INSERT statement failed.
+        // Just show the error, not the form
+        echo db_error($db);
+        db_close($db);
+        exit;
     }
-  }
+}
 
-  // Edit a salesperson record
-  // Either returns true or an array of errors
-  function update_salesperson($salesperson) {
+// Edit a salesperson record
+// Either returns true or an array of errors
+function update_salesperson($salesperson) {
     global $db;
 
     $errors = validate_salesperson($salesperson);
     if (!empty($errors)) {
-      return $errors;
+        return $errors;
     }
 
     $sql = "UPDATE salespeople SET ";
@@ -365,98 +376,105 @@
     // For update_salesperson statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
-      return true;
+        return true;
     } else {
-      // The SQL UPDATE statement failed.
-      // Just show the error, not the form
-      echo db_error($db);
-      db_close($db);
-      exit;
+        // The SQL UPDATE statement failed.
+        // Just show the error, not the form
+        echo db_error($db);
+        db_close($db);
+        exit;
     }
-  }
+}
 
-  // To find territories, we need to use the join table.
-  // We LEFT JOIN salespeople_territories and then find results
-  // in the join table which have the same salesperson ID.
-  function find_territories_by_salesperson_id($id=0) {
+// To find territories, we need to use the join table.
+// We LEFT JOIN salespeople_territories and then find results
+// in the join table which have the same salesperson ID.
+function find_territories_by_salesperson_id($id=0) {
     global $db;
     $sql = "SELECT * FROM territories ";
     $sql .= "LEFT JOIN salespeople_territories
-              ON (territories.id = salespeople_territories.territory_id) ";
-    $sql .= "WHERE salespeople_territories.salesperson_id='" . $id . "' ";
-    $sql .= "ORDER BY territories.name ASC;";
-    $territories_result = db_query($db, $sql);
-    return $territories_result;
-  }
+        ON (territories.id = salespeople_territories.territory_id) ";
+$sql .= "WHERE salespeople_territories.salesperson_id='" . $id . "' ";
+$sql .= "ORDER BY territories.name ASC;";
+$territories_result = db_query($db, $sql);
+return $territories_result;
+}
 
-  //
-  // USER QUERIES
-  //
+//
+// USER QUERIES
+//
 
-  // Find all users, ordered last_name, first_name
-  function find_all_users() {
+// Find all users, ordered last_name, first_name
+function find_all_users() {
     global $db;
     $sql = "SELECT * FROM users ";
     $sql .= "ORDER BY last_name ASC, first_name ASC;";
     $users_result = db_query($db, $sql);
     return $users_result;
-  }
+}
 
-  // Find user using id
-  function find_user_by_id($id=0) {
+// Find user using id
+function find_user_by_id($id=0) {
     global $db;
     $sql = "SELECT * FROM users WHERE id='" . $id . "' LIMIT 1;";
     $users_result = db_query($db, $sql);
     return $users_result;
-  }
+}
 
-  function validate_user($user, $errors=array()) {
+function validate_user($user, $errors=array()) {
     if (is_blank($user['first_name'])) {
-      $errors[] = "First name cannot be blank.";
-    } elseif (!has_length($user['first_name'], array('min' => 2, 'max' => 255)))
+        $errors[] = "First name cannot be blank.";
+    }
+    // My custom validation
+    elseif (!has_length($user['first_name'], array('min' => 2, 'max' => 255)))
     {
-      $errors[] = "First name must be between 2 and 255 characters.";
+        $errors[] = "First name must be between 2 and 255 characters.";
+    } elseif (preg_match("/^[A-Za-z]+$/", $user['first_name']) == 0) {
+        $errors[] = "First name is invalid";
     }
 
     if (is_blank($user['last_name'])) {
-      $errors[] = "Last name cannot be blank.";
+        $errors[] = "Last name cannot be blank.";
     } elseif (!has_length($user['last_name'], array('min' => 2, 'max' => 255)))
     {
-      $errors[] = "Last name must be between 2 and 255 characters.";
+        $errors[] = "Last name must be between 2 and 255 characters.";
+        // My custom validation
+    } elseif (preg_match("/^[A-Za-z]+$/", $user['last_name']) == 0) {
+        $errors[] = "Last name is invalid";
     }
 
     if (is_blank($user['email'])) {
-      $errors[] = "Email cannot be blank.";
+        $errors[] = "Email cannot be blank.";
     } elseif (!has_valid_email_format($user['email'])) {
-      $errors[] = "Email must be a valid format.";
+        $errors[] = "Email must be a valid format.";
     } elseif (preg_match("/[A-Za-z0-9@._\-]+/", $user['email']) == 0) {
         $errors[] = "Email can only contain A-Z, a-z, 0-9, @,.,_,-";
     }
     // My Custom validation 2:
-    elseif 
-        (preg_match("/^[A-Za-z0-9._\-]+@[A-Za-z0-9._\-]+\.[A-Za-z0-9._\-]+$/", 
-        $user['email']) == 0) {
-        $errors[] = "Email is invalid";
+    elseif
+        (preg_match("/^[A-Za-z0-9._\-]+@[A-Za-z0-9._\-]+\.[A-Za-z0-9._\-]+$/",
+            $user['email']) == 0) {
+            $errors[] = "Email is invalid";
     }
 
     if (is_blank($user['username'])) {
-      $errors[] = "Username cannot be blank.";
+        $errors[] = "Username cannot be blank.";
     } elseif (!has_length($user['username'], array('max' => 255))) {
-      $errors[] = "Username must be less than 255 characters.";
+        $errors[] = "Username must be less than 255 characters.";
     } elseif (preg_match("/[A-Za-z0-9_]+/", $user['username']) == 0) {
         $errors[] = "Username can only have A-Z, a-z, 0-9, and _";
     }
     return $errors;
-  }
+}
 
-  // Add a new user to the table
-  // Either returns true or an array of errors
-  function insert_user($user) {
+// Add a new user to the table
+// Either returns true or an array of errors
+function insert_user($user) {
     global $db;
 
     $errors = validate_user($user);
     if (!empty($errors)) {
-      return $errors;
+        return $errors;
     }
 
     $created_at = date("Y-m-d H:i:s");
@@ -472,24 +490,24 @@
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
-      return true;
+        return true;
     } else {
-      // The SQL INSERT statement failed.
-      // Just show the error, not the form
-      echo db_error($db);
-      db_close($db);
-      exit;
+        // The SQL INSERT statement failed.
+        // Just show the error, not the form
+        echo db_error($db);
+        db_close($db);
+        exit;
     }
-  }
+}
 
-  // Edit a user record
-  // Either returns true or an array of errors
-  function update_user($user) {
+// Edit a user record
+// Either returns true or an array of errors
+function update_user($user) {
     global $db;
 
     $errors = validate_user($user);
     if (!empty($errors)) {
-      return $errors;
+        return $errors;
     }
 
     $sql = "UPDATE users SET ";
@@ -502,14 +520,14 @@
     // For update_user statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
-      return true;
+        return true;
     } else {
-      // The SQL UPDATE statement failed.
-      // Just show the error, not the form
-      echo db_error($db);
-      db_close($db);
-      exit;
+        // The SQL UPDATE statement failed.
+        // Just show the error, not the form
+        echo db_error($db);
+        db_close($db);
+        exit;
     }
-  }
+}
 
 ?>

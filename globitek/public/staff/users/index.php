@@ -11,33 +11,35 @@
   <a href="new.php">Add a User</a><br />
   <br />
 
-  <?php
-    $users_result = find_all_users();
+<?php
+$users_result = find_all_users();
 
-    echo "<table id=\"users\" style=\"width: 500px;\">";
+echo "<table id=\"users\" style=\"width: 500px;\">";
+echo "<tr>";
+echo "<th>First name</th>";
+echo "<th>Last name</th>";
+echo "<th>Username</th>";
+echo "<th></th>";
+echo "<th></th>";
+echo "</tr>";
+while($user = db_fetch_assoc($users_result)) {
     echo "<tr>";
-    echo "<th>First name</th>";
-    echo "<th>Last name</th>";
-    echo "<th>Username</th>";
-    echo "<th></th>";
-    echo "<th></th>";
+    echo "<td>" . $user['first_name'] . "</td>";
+    echo "<td>" . $user['last_name'] . "</td>";
+    echo "<td>" . $user['username'] . "</td>";
+    echo "<td>";
+    $qstring = 'id=' . urlencode($user['id']);
+    echo '<a href="show.php?' . htmlentities($qstring) . '">Show</a>';
+    echo "</td>";
+    echo "<td>";
+    $qstring = 'id=' . urlencode($user['id']);
+    echo '<a href="edit.php?' . htmlentities($qstring) . '">Edit</a>';
+    echo "</td>";
     echo "</tr>";
-    while($user = db_fetch_assoc($users_result)) {
-      echo "<tr>";
-      echo "<td>" . $user['first_name'] . "</td>";
-      echo "<td>" . $user['last_name'] . "</td>";
-      echo "<td>" . $user['username'] . "</td>";
-      echo "<td>";
-      echo "<a href=\"show.php?id=" . $user['id'] . "\">Show</a>";
-      echo "</td>";
-      echo "<td>";
-      echo "<a href=\"edit.php?id=" . $user['id'] . "\">Edit</a>";
-      echo "</td>";
-      echo "</tr>";
-    } // end while $user
-    db_free_result($users_result);
-    echo "</table>"; // #$users
-  ?>
+} // end while $user
+db_free_result($users_result);
+echo "</table>"; // #$users
+?>
 
 </div>
 
