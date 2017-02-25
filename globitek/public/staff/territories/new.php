@@ -20,11 +20,11 @@ if(is_post_request()) {
 
   // Confirm that values are present before accessing them.
     if(isset($_POST['name'])) { $territory['name'] =
-        htmlspecialchars($_POST['name']); }
+        $_POST['name']; }
     if(isset($_POST['position'])) { $territory['position'] =
-        htmlspecialchars($_POST['position']); }
-    if(isset($_POST['country_id'])) { $territory['country_id'] =
-        htmlspecialchars($_POST['country_id']); }
+        $_POST['position']; }
+    if(isset($_POST['state_id'])) { $territory['state_id'] =
+        $_POST['state_id']; }
 
   $result = insert_territory($territory);
   if($result === true) {

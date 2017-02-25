@@ -160,7 +160,7 @@ function find_territories_for_state_id($state_id=0) {
 function find_territory_by_id($id=0) {
     global $db;
     $sql = "SELECT * FROM territories ";
-    $sql .= "WHERE id='" . $db_escape($db,id) . "';";
+    $sql .= "WHERE id='" . db_escape($db,$id) . "';";
     $territory_result = db_query($db, $sql);
     return $territory_result;
 }
@@ -172,7 +172,7 @@ function validate_territory($territory, $errors=array()) {
     } elseif (!has_length($territory['name'], array('min' => 2, 'max' => 255))) {
         $errors[] = "Territory name must be between 2 and 255 characters.";
         // My custom validation
-    } elseif (preg_match("/^[A-Za-z0-9]+/", $territory['name']) == 0) {
+    } elseif (preg_match("/^[A-Za-z0-9 ]+/", $territory['name']) == 0) {
         $errors[] = "Name is invalid, it can only read alphabets and numbers";
     }
 
@@ -196,9 +196,9 @@ function insert_territory($territory) {
     $sql = "INSERT INTO territories "; // TODO add SQL
     $sql .= "(name, position, state_id) ";
     $sql .= "VALUES (";
-    $sql .= "'" . db_escape($db,territory['name']) . "',";
-    $sql .= "'" . db_escape($db,territory['position']) . "',";
-    $sql .= "'" . db_escape($db,territory['state_id']) . "' ";
+    $sql .= "'" . db_escape($db,$territory['name']) . "',";
+    $sql .= "'" . db_escape($db,$territory['position']) . "',";
+    $sql .= "'" . db_escape($db,$territory['state_id']) . "' ";
     $sql .= ");";
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
@@ -225,8 +225,8 @@ function update_territory($territory) {
 
     $sql = "UPDATE territories SET ";
     $sql .= "name='" . db_escape($db, $territory['name']) . "', ";
-    $sql .= "position='" . $db_escape($db,territory['position']) . "' ";
-    $sql .= "WHERE id='" . $db_escape($db,territory['id']) . "' ";
+    $sql .= "position='" . db_escape($db,$territory['position']) . "' ";
+    $sql .= "WHERE id='" . db_escape($db,$territory['id']) . "' ";
     $sql .= "LIMIT 1;";
     // For update_territory statments, $result is just true/false
     $result = db_query($db, $sql);
