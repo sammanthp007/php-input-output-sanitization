@@ -46,6 +46,17 @@
 
   function validate_state($state, $errors=array()) {
     // TODO add validations
+    if (is_blank($state['name'])) {
+      $errors[] = "State name cannot be blank.";
+    } elseif (!has_length($state['name'], array('min' => 2, 'max' => 255))) {
+      $errors[] = "State name must be between 2 and 255 characters.";
+    }
+
+    if (is_blank($state['code'])) {
+      $errors[] = "Code cannot be blank.";
+    } elseif (!has_length($state['code'], array('min' => 1, 'max' => 2))) {
+      $errors[] = "Code must be between 1 and 2 characters.";
+    }
 
     return $errors;
   }
@@ -60,7 +71,12 @@
       return $errors;
     }
 
-    $sql = ""; // TODO add SQL
+    $sql = "INSERT INTO states "; // TODO add SQL
+    $sql .= "(name, code) ";
+    $sql .= "VALUES (";
+    $sql .= "'" . $state['name'] . "',";
+    $sql .= "'" . $state['code'] . "' ";
+    $sql .= ");";
     // For INSERT statments, $result is just true/false
     $result = db_query($db, $sql);
     if($result) {
@@ -241,9 +257,9 @@
     }
 
     if (is_blank($salesperson['phone'])) {
-      $errors[] = "Username cannot be blank.";
+      $errors[] = "Phone cannot be blank.";
     } elseif (!has_length($salesperson['phone'], array('max' => 255))) {
-      $errors[] = "Username must be less than 255 characters.";
+      $errors[] = "Phone must be less than 255 characters.";
     }
     return $errors;
   }
