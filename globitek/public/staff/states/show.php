@@ -14,7 +14,7 @@ $state = db_fetch_assoc($state_result);
 <?php include(SHARED_PATH . '/header.php'); ?>
 
 <div id="main-content">
-  <a href="#add_a_url">Back to States List</a><br />
+  <a href="index.php">Back to States List</a><br />
 
   <h1>State: <?php echo $state['name']; ?></h1>
 
